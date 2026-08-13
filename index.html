@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keele Runs — running routes around York University</title>
+<meta name="description" content="Hand-checked running routes around York University's Keele campus in Toronto.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to routes</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <h1>Keele Runs</h1>
+    <p class="tagline">Running routes around York University, Toronto</p>
+  </div>
+</header>
+
+<div class="banner wrap" role="status">
+  <strong>Preview.</strong> Every route here is unverified placeholder data and the photos have
+  not been taken yet. Distances and lighting are not yet checked on the ground.
+</div>
+
+<main id="main">
+
+  <!-- ---------- LIST VIEW ---------- -->
+  <section id="view-list" class="wrap">
+
+    <form id="filters" aria-label="Filter routes">
+      <fieldset>
+        <legend>How far</legend>
+        <div class="chips" data-group="distance">
+          <button type="button" class="chip is-on" data-value="any">Any</button>
+          <button type="button" class="chip" data-value="short">Under 3 km</button>
+          <button type="button" class="chip" data-value="mid">3–6 km</button>
+          <button type="button" class="chip" data-value="long">Over 6 km</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Underfoot</legend>
+        <div class="chips" data-group="surface">
+          <button type="button" class="chip is-on" data-value="any">Any</button>
+          <button type="button" class="chip" data-value="paved">Paved</button>
+          <button type="button" class="chip" data-value="trail">Trail</button>
+          <button type="button" class="chip" data-value="mixed">Mixed</button>
+          <button type="button" class="chip" data-value="track">Track</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Lighting</legend>
+        <div class="chips" data-group="lighting">
+          <button type="button" class="chip is-on" data-value="any">Any</button>
+          <button type="button" class="chip" data-value="lit">Lit</button>
+          <button type="button" class="chip" data-value="partly lit">Partly lit</button>
+          <button type="button" class="chip" data-value="unlit">Unlit</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Scenery</legend>
+        <div class="chips" data-group="scenery">
+          <button type="button" class="chip is-on" data-value="any">Any</button>
+          <button type="button" class="chip" data-value="campus">Campus</button>
+          <button type="button" class="chip" data-value="ravine">Ravine</button>
+          <button type="button" class="chip" data-value="creek">Creek</button>
+          <button type="button" class="chip" data-value="parks">Parks</button>
+          <button type="button" class="chip" data-value="woods">Woods</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <p id="count" class="count" role="status"></p>
+
+    <ul id="routes" class="cards"></ul>
+
+    <p id="empty" class="empty" hidden>
+      No route matches all of those. Try loosening one filter —
+      <button type="button" class="linkish" id="reset">clear them all</button>.
+    </p>
+  </section>
+
+  <!-- ---------- DETAIL VIEW ---------- -->
+  <article id="view-detail" hidden>
+    <div class="wrap">
+      <button type="button" class="back" id="back">← All routes</button>
+      <h2 id="d-name"></h2>
+      <p id="d-unverified" class="unverified">Not yet checked on the ground</p>
+      <p class="lede" id="d-summary"></p>
+    </div>
+
+    <div id="map" aria-label="Route map"></div>
+
+    <div class="wrap">
+      <div class="locate-block">
+        <p class="consent" id="consent">
+          To show where you are on this route, the map needs your location. It stays on your
+          phone — we never store or share where you run. The route works fine without it.
+        </p>
+        <button type="button" id="locate" class="locate">Show where I am</button>
+        <p id="locate-msg" class="locate-msg" role="status"></p>
+      </div>
+
+      <dl class="facts" id="d-facts"></dl>
+
+      <h3>Photos</h3>
+      <div class="photos" id="d-photos"></div>
+    </div>
+  </article>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="attrib">
+      <a href="https://openfreemap.org/" rel="noopener">OpenMapTiles</a> ·
+      Data from <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>
+    </p>
+    <p class="small">
+      Lighting and traffic notes describe what was seen on the date checked. Conditions change,
+      especially in winter. Use your own judgement.
+    </p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

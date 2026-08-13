@@ -1,0 +1,129 @@
+{
+  "_note": "PLACEHOLDER DATA. Every route below is unverified desk research from EVD-005. Distances, surfaces, lighting and the drawn lines are illustrative only and must be replaced with ground-checked values and real GPS traces. See ../../content/route-template.md",
+  "attribution": "OpenMapTiles · Data from OpenStreetMap",
+  "centre": [-79.5035, 43.7728],
+  "routes": [
+    {
+      "id": "campus-loop",
+      "name": "Campus loop",
+      "verified": false,
+      "start": "Vari Hall, main campus walkway",
+      "distanceKm": 3.2,
+      "timeMin": [18, 26],
+      "shape": "loop",
+      "surface": "paved",
+      "hills": "flat",
+      "lighting": { "status": "lit", "checked": null },
+      "traffic": "Pedestrian paths, a few service-road crossings",
+      "scenery": ["campus"],
+      "summary": "The obvious first run for anyone new to Keele. Wide lit walkways, no road running, and you are never far from a building if the weather turns.",
+      "photos": [],
+      "path": [
+        [-79.5065, 43.7738], [-79.5028, 43.7748], [-79.4985, 43.7745],
+        [-79.4962, 43.7726], [-79.4988, 43.7702], [-79.5032, 43.7699],
+        [-79.5068, 43.7714], [-79.5065, 43.7738]
+      ]
+    },
+    {
+      "id": "steeles-track",
+      "name": "The track off Steeles",
+      "verified": false,
+      "start": "Athletics track, north end of campus",
+      "distanceKm": 0.4,
+      "timeMin": [20, 45],
+      "shape": "loop",
+      "surface": "track",
+      "hills": "flat",
+      "lighting": { "status": "partly lit", "checked": null },
+      "traffic": "None",
+      "scenery": ["campus"],
+      "summary": "Not a route so much as a place to do intervals. Measured, flat, and no crossings to break your rhythm. Included for anyone training rather than exploring.",
+      "photos": [],
+      "path": [
+        [-79.5052, 43.7782], [-79.5040, 43.7784], [-79.5036, 43.7778],
+        [-79.5048, 43.7776], [-79.5052, 43.7782]
+      ]
+    },
+    {
+      "id": "finch-corridor-east",
+      "name": "Finch Hydro Corridor, eastbound",
+      "verified": false,
+      "start": "Corridor trail entrance south of campus",
+      "distanceKm": 4.0,
+      "timeMin": [22, 32],
+      "shape": "out-and-back",
+      "surface": "paved",
+      "hills": "gently rolling",
+      "lighting": { "status": "unlit", "checked": null },
+      "traffic": "Shared with cyclists, a few road crossings",
+      "scenery": ["parks", "open"],
+      "summary": "Paved multi-use trail running east toward G. Ross Lord Park. Straight, uninterrupted, and easy to cut short at any point since you simply turn around.",
+      "photos": [],
+      "path": [
+        [-79.5030, 43.7662], [-79.4980, 43.7665], [-79.4930, 43.7668],
+        [-79.4880, 43.7670], [-79.4835, 43.7673]
+      ]
+    },
+    {
+      "id": "black-creek-parkland",
+      "name": "Black Creek Parkland",
+      "verified": false,
+      "start": "Trail entrance west of Sentinel Road",
+      "distanceKm": 5.5,
+      "timeMin": [30, 42],
+      "shape": "out-and-back",
+      "surface": "trail",
+      "hills": "gently rolling",
+      "lighting": { "status": "unlit", "checked": null },
+      "traffic": "Quiet, occasional cyclists",
+      "scenery": ["ravine", "creek", "woods"],
+      "summary": "Wooded trail along the creek, and the closest thing to getting out of the city without leaving it. Softer underfoot than anything on campus.",
+      "photos": [],
+      "path": [
+        [-79.5088, 43.7710], [-79.5102, 43.7688], [-79.5108, 43.7662],
+        [-79.5120, 43.7638], [-79.5132, 43.7615]
+      ]
+    },
+    {
+      "id": "derrydowns-northwood",
+      "name": "South to Derrydowns and Northwood",
+      "verified": false,
+      "start": "Black Creek trail, heading south",
+      "distanceKm": 8.5,
+      "timeMin": [45, 65],
+      "shape": "point-to-point",
+      "surface": "mixed",
+      "hills": "gently rolling",
+      "lighting": { "status": "unlit", "checked": null },
+      "traffic": "Park paths with road crossings between parks",
+      "scenery": ["ravine", "parks", "creek"],
+      "summary": "The longer ravine option, linking the creek trail south through two parks. The distance run when you want one, with a transit ride home at the end.",
+      "photos": [],
+      "path": [
+        [-79.5132, 43.7615], [-79.5145, 43.7580], [-79.5158, 43.7548],
+        [-79.5170, 43.7512], [-79.5182, 43.7478], [-79.5190, 43.7445]
+      ]
+    },
+    {
+      "id": "downsview-park",
+      "name": "Downsview Park",
+      "verified": false,
+      "start": "Downsview Park, north entrance",
+      "distanceKm": 6.0,
+      "timeMin": [33, 48],
+      "shape": "loop",
+      "surface": "mixed",
+      "hills": "flat",
+      "lighting": { "status": "partly lit", "checked": null },
+      "traffic": "Park paths, minimal road contact",
+      "scenery": ["parks", "open"],
+      "summary": "Wide open parkland further out, worth the trip when campus feels small. Big skies and long sightlines, which some runners like and others find exposed.",
+      "photos": [],
+      "path": [
+        [-79.4790, 43.7420], [-79.4750, 43.7442], [-79.4712, 43.7428],
+        [-79.4708, 43.7395], [-79.4742, 43.7378], [-79.4782, 43.7392],
+        [-79.4790, 43.7420]
+      ]
+    }
+  ]
+}
