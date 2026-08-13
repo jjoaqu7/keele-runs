@@ -62,6 +62,14 @@
       </fieldset>
 
       <fieldset>
+        <legend>Saved</legend>
+        <div class="chips">
+          <button type="button" class="chip" id="saved-only" aria-pressed="false">★ Only my saved routes</button>
+          <button type="button" class="chip danger" id="forget" hidden>Forget everything</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
         <legend>Scenery</legend>
         <div class="chips" data-group="scenery">
           <button type="button" class="chip is-on" data-value="any">Any</button>
@@ -81,6 +89,11 @@
     <p id="empty" class="empty" hidden>
       No route matches all of those. Try loosening one filter —
       <button type="button" class="linkish" id="reset">clear them all</button>.
+    </p>
+
+    <p id="empty-saved" class="empty" hidden>
+      You have not saved any routes yet. Open one and press <strong>Save this route</strong>.
+      Saved routes stay on this device — they will not appear on your other phone or laptop.
     </p>
   </section>
 
@@ -103,6 +116,18 @@
         </p>
         <button type="button" id="locate" class="locate">Show where I am</button>
         <p id="locate-msg" class="locate-msg" role="status"></p>
+      </div>
+
+      <div class="keep-block">
+        <div class="keep-actions">
+          <button type="button" id="fav" class="keep" aria-pressed="false">☆ Save this route</button>
+          <button type="button" id="mark-done" class="keep">＋ I ran this</button>
+        </div>
+        <div id="run-log"></div>
+        <p class="keep-note">
+          Saved routes and logged runs are kept in this browser on this device only. Nothing is
+          sent anywhere and no account is needed. Clearing your browser data erases them.
+        </p>
       </div>
 
       <dl class="facts" id="d-facts"></dl>

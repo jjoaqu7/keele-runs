@@ -1,7 +1,11 @@
 /* Keele Runs — route browsing, filtering, and a map per route.
  *
- * No accounts, no storage, no analytics. Location is read only when the runner
- * asks for it and is never sent anywhere or kept.
+ * No accounts, no analytics, no server. Location is read only when the runner asks
+ * for it and is never sent anywhere or kept.
+ *
+ * Favourites and run history live in this browser's local storage and never leave the
+ * device. That means they are per-device: they will not follow a runner to a laptop, and
+ * clearing browser data erases them. Accounts would fix that, at the cost of a backend.
  */
 
 const TILES = 'https://tiles.openfreemap.org/styles/liberty';
@@ -22,7 +26,62 @@ let map = null;          // created once, on first route opened
 let locationWatch = null;
 let youMarker = null;
 
-const filters = { distance: 'any', surface: 'any', lighting: 'any', scenery: 'any' };
+const filters = { distance: 'any', surface: 'any', lighting: 'any', scenery: 'any', saved: false };
+
+/* ---------------- kept on this device ----------------
+ * Private browsing and blocked-storage settings make localStorage throw, so every
+ * access is guarded. If it is unavailable the site still works, it just forgets.
+ */
+
+const STORE = 'keele-runs';
+
+function loadStore() {
+  try {
+    return JSON.parse(localStorage.getItem(STORE)) || { favourites: [], runs: [] };
+  } catch {
+    return { favourites: [], runs: [] };
+  }
+}
+
+function saveStore(s) {
+  try {
+    localStorage.setItem(STORE, JSON.stringify(s));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+let store = loadStore();
+
+const isFavourite = (id) => store.favourites.includes(id);
+
+function toggleFavourite(id) {
+  store.favourites = isFavourite(id)
+    ? store.favourites.filter((f) => f !== id)
+    : [...store.favourites, id];
+  saveStore(store);
+}
+
+const runsFor = (id) => store.runs.filter((r) => r.route === id);
+
+function markRunDone(id) {
+  store.runs.push({ route: id, date: new Date().toISOString().slice(0, 10) });
+  saveStore(store);
+}
+
+function undoLastRun(id) {
+  const last = store.runs.map((r) => r.route).lastIndexOf(id);
+  if (last !== -1) {
+    store.runs.splice(last, 1);
+    saveStore(store);
+  }
+}
+
+function forgetEverything() {
+  store = { favourites: [], runs: [] };
+  try { localStorage.removeItem(STORE); } catch { /* nothing to remove */ }
+}
 
 /* ---------------- loading ---------------- */
 
@@ -58,7 +117,8 @@ function matches(r) {
   return inDistanceBand(r.distanceKm, filters.distance)
     && (filters.surface === 'any' || r.surface === filters.surface)
     && (filters.lighting === 'any' || r.lighting.status === filters.lighting)
-    && (filters.scenery === 'any' || r.scenery.includes(filters.scenery));
+    && (filters.scenery === 'any' || r.scenery.includes(filters.scenery))
+    && (!filters.saved || isFavourite(r.id));
 }
 
 function wireFilters() {
@@ -73,8 +133,29 @@ function wireFilters() {
     });
   });
 
+  el('saved-only').addEventListener('click', (e) => {
+    filters.saved = !filters.saved;
+    e.currentTarget.classList.toggle('is-on', filters.saved);
+    e.currentTarget.setAttribute('aria-pressed', String(filters.saved));
+    render();
+  });
+
+  el('forget').addEventListener('click', () => {
+    if (!confirm('Forget every saved route and logged run on this device? This cannot be undone.')) return;
+    forgetEverything();
+    filters.saved = false;
+    const only = el('saved-only');
+    only.classList.remove('is-on');
+    only.setAttribute('aria-pressed', 'false');
+    render();
+  });
+
   el('reset').addEventListener('click', () => {
     Object.keys(filters).forEach((k) => { filters[k] = 'any'; });
+    filters.saved = false;
+    const only = el('saved-only');
+    only.classList.remove('is-on');
+    only.setAttribute('aria-pressed', 'false');
     document.querySelectorAll('.chips').forEach((group) => {
       group.querySelectorAll('.chip').forEach((c) => {
         c.classList.toggle('is-on', c.dataset.value === 'any');
@@ -93,30 +174,39 @@ function render() {
   const shown = ROUTES.filter(matches);
   const list = el('routes');
 
-  list.innerHTML = shown.map((r) => `
+  list.innerHTML = shown.map((r) => {
+    const done = runsFor(r.id).length;
+    return `
     <li class="card">
       <button class="card-hit" data-id="${r.id}">
         <span class="thumb"><span>Photo to come</span></span>
         <span class="card-body">
-          <h3>${r.name}</h3>
+          <h3>${r.name}${isFavourite(r.id) ? ' <span class="star" aria-label="saved">★</span>' : ''}</h3>
           <p>${r.summary}</p>
           <span class="meta">
             <span class="tag strong">${r.distanceKm} km</span>
             <span class="tag">${r.timeMin[0]}–${r.timeMin[1]} min</span>
             <span class="tag">${r.surface}</span>
             <span class="tag">${r.lighting.status}</span>
+            ${done ? `<span class="tag done">run ${done}×</span>` : ''}
           </span>
         </span>
       </button>
-    </li>`).join('');
+    </li>`;
+  }).join('');
 
   list.querySelectorAll('.card-hit').forEach((b) => {
     b.addEventListener('click', () => { location.hash = b.dataset.id; });
   });
 
-  el('count').textContent =
-    `${shown.length} of ${ROUTES.length} route${ROUTES.length === 1 ? '' : 's'}`;
+  const total = filters.saved ? store.favourites.length : ROUTES.length;
+  el('count').textContent = filters.saved
+    ? `${shown.length} saved route${shown.length === 1 ? '' : 's'}`
+    : `${shown.length} of ${total} route${total === 1 ? '' : 's'}`;
   el('empty').hidden = shown.length !== 0;
+  el('empty-saved').hidden = !(shown.length === 0 && filters.saved && store.favourites.length === 0);
+  el('empty').hidden = shown.length !== 0 || !el('empty-saved').hidden;
+  el('forget').hidden = store.favourites.length === 0 && store.runs.length === 0;
 }
 
 /* ---------------- routing ---------------- */
@@ -143,6 +233,7 @@ function showDetail(r) {
   el('d-name').textContent = r.name;
   el('d-summary').textContent = r.summary;
   el('d-unverified').hidden = r.verified;
+  paintSaveAndLog(r);
 
   const checked = r.lighting.checked
     ? `<span class="checked">checked ${r.lighting.checked}</span>`
@@ -166,6 +257,31 @@ function showDetail(r) {
        <div class="photo-ph">Photo along the route<br>to come</div>`;
 
   drawMap(r);
+}
+
+/* ---------------- save and log, on this device ---------------- */
+
+function paintSaveAndLog(r) {
+  const fav = el('fav');
+  const saved = isFavourite(r.id);
+  fav.textContent = saved ? '★ Saved' : '☆ Save this route';
+  fav.classList.toggle('is-on', saved);
+  fav.setAttribute('aria-pressed', String(saved));
+  fav.onclick = () => { toggleFavourite(r.id); paintSaveAndLog(r); };
+
+  const runs = runsFor(r.id);
+  const log = el('run-log');
+  log.innerHTML = runs.length
+    ? `<p class="run-count">Run ${runs.length} time${runs.length === 1 ? '' : 's'}.
+         Last on ${runs[runs.length - 1].date}.
+         <button type="button" class="linkish" id="undo-run">Remove the last one</button></p>`
+    : `<p class="run-count">Not run yet.</p>`;
+
+  const mark = el('mark-done');
+  mark.onclick = () => { markRunDone(r.id); paintSaveAndLog(r); };
+
+  const undo = el('undo-run');
+  if (undo) undo.onclick = () => { undoLastRun(r.id); paintSaveAndLog(r); };
 }
 
 /* ---------------- map ---------------- */

@@ -251,3 +251,42 @@ legend {
 
 /* MapLibre's own attribution should not fight ours */
 .maplibregl-ctrl-attrib { font-size: .72rem; }
+
+/* ---- saved routes and run log, kept on the device ---- */
+
+.chip.danger { border-color: #b45309; color: #b45309; }
+.chip.danger:hover { background: var(--warn-soft); }
+
+.star { color: var(--accent); font-size: .95em; }
+.tag.done { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.keep-block {
+  margin: 1.25rem 0 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.keep-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.keep {
+  font: inherit;
+  font-size: .92rem;
+  padding: .5rem .9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+}
+.keep:hover { border-color: var(--accent); }
+.keep.is-on {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.run-count { margin: .75rem 0 0; font-size: .9rem; color: var(--ink-soft); }
+.keep-note { margin: .75rem 0 0; font-size: .8rem; color: var(--ink-soft); }

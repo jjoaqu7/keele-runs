@@ -39,12 +39,16 @@ so the "Show where I am" button works in local development.
 | REQ-017 Assumes a phone signal | as designed |
 | REQ-018 Own photographs | placeholders in place, photos pending |
 | REQ-004 Later runner submissions | routes live in one JSON file, nothing hard-codes them |
-| REQ-013, 014, 015 Accounts, favourites, run history | **not built** — needs sign-in setup and a database |
+| REQ-013 Save favourites | on this device only, no sign-in |
+| REQ-014, 015 Mark a run done, see your history | on this device only, no sign-in |
+| Sign-in, and favourites that follow you between devices | **not built** — needs Firebase Auth and a database |
 
 ## What is deliberately missing
 
-- **Accounts.** Sign-in needs Google and Microsoft developer-console registrations and
-  somewhere to store data. That is cloud setup and hosting cost, approved separately.
+- **Accounts.** Favourites and run history are kept in the browser on one device. They do
+  not follow a runner to another phone or laptop, and clearing browser data erases them.
+  Making them portable needs Firebase Auth and a database — see `runbooks/firebase-setup.md`
+  in the planning repo.
 - **Real routes.** Everything in `data/routes.json` is unverified desk research. Distances,
   surfaces, lighting and the drawn lines are illustrative. Replace them with ground-checked
   values and real GPS traces.
